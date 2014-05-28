@@ -27,6 +27,8 @@ function getValidMessage(error){
                 return JSON.stringify(error);
             }
             break;
+        case 'pattern':
+            return 'Invalid format';
         default:
             return JSON.stringify(error);
     }
