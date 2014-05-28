@@ -10,7 +10,7 @@ test('normalise Exists', function (t) {
 
 
 test('normalise returns correct messages', function (t) {
-    t.plan(12);
+    t.plan(13);
 
     var testErrors = [
         {
@@ -61,6 +61,13 @@ test('normalise returns correct messages', function (t) {
             testedValue: 'not a date',
             desc: 'not a valid date-time per RFC 3339 section 5.6 (use "date" for date-only or "time" for time-only)',
             kind: 'FormatValidationError'
+        },
+        {
+            instanceContext: '#/test8',
+            constraintName: 'pattern',
+            constraintValue: '/^[0-9a-fA-F]{24}$/',
+            testedValue: 'does not match pattern',
+            kind: 'StringValidationError'
         }
     ];
 
@@ -74,7 +81,7 @@ test('normalise returns correct messages', function (t) {
     t.ok(errors.fields, 'fields exists');
     var fieldKeys = Object.keys(errors.fields);
 
-    t.equal(fieldKeys.length, 8, 'correct number of fields');
+    t.equal(fieldKeys.length, 9, 'correct number of fields');
 
     t.equal(errors.fields.test1[0], 'Required', 'Correct required message');
     t.equal(errors.fields.foo[0], 'Required', 'Correct required message');
@@ -84,4 +91,5 @@ test('normalise returns correct messages', function (t) {
     t.equal(errors.fields.test5[0], 'Must be longer than 7 characters', 'Correct minLength message');
     t.equal(errors.fields.test6[0], 'Must be shorter than 5 characters', 'Correct maxLength message');
     t.equal(errors.fields.test7[0], 'Should be a date', 'Correct format message');
+    t.equal(errors.fields.test8[0], 'Invalid format', 'Correct format message');
 });
