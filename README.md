@@ -1,10 +1,10 @@
 #jayschema-error-messages
 
-Normalises the crazy error objects that get returned from JaySchema
+Normalises the crazy error objects that get returned from JaySchema.
 
-JaySchema can ruturn some strangly formatted error objects such as the below.
+JaySchema can return some strangely formatted error objects such as the below.
 
-This module normalisesthem into something same and actionable.
+This module normalises them into something sane and actionable.
 
 ##Usage
 
