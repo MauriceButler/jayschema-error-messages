@@ -1,6 +1,6 @@
 {
   "name": "jayschema-error-messages",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Normalises the crazy error objects that get returned from JaySchema",
   "main": "index.js",
   "scripts": {
