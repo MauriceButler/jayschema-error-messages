@@ -2,7 +2,11 @@ function getFieldName(error){
     if(error.instanceContext.length > 2){
         return error.instanceContext.slice(2);
     } else {
-        return error.constraintValue[0];
+        if(error.constraintValue){
+            return error.constraintValue[0];
+        } else {
+            return error.constraintName;
+        }
     }
 }
 
@@ -29,6 +33,8 @@ function getValidMessage(error){
             break;
         case 'pattern':
             return 'Invalid format';
+        case 'additionalProperties':
+            return 'Additional property "' + error.testedValue + '" not allowed';
         default:
             return JSON.stringify(error);
     }

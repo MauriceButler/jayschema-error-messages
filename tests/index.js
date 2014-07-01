@@ -10,7 +10,7 @@ test('normalise Exists', function (t) {
 
 
 test('normalise returns correct messages', function (t) {
-    t.plan(13);
+    t.plan(14);
 
     var testErrors = [
         {
@@ -68,6 +68,13 @@ test('normalise returns correct messages', function (t) {
             constraintValue: '/^[0-9a-fA-F]{24}$/',
             testedValue: 'does not match pattern',
             kind: 'StringValidationError'
+        },
+        {
+            instanceContext: '#',
+            constraintName: 'additionalProperties',
+            testedValue: 'clientId',
+            desc: 'property "clientId" not allowed by "properties" or by "patternProperties" and "additionalProperties" is false',
+            kind: 'ObjectValidationError'
         }
     ];
 
@@ -81,7 +88,7 @@ test('normalise returns correct messages', function (t) {
     t.ok(errors.fields, 'fields exists');
     var fieldKeys = Object.keys(errors.fields);
 
-    t.equal(fieldKeys.length, 9, 'correct number of fields');
+    t.equal(fieldKeys.length, 10, 'correct number of fields');
 
     t.equal(errors.fields.test1[0], 'Required', 'Correct required message');
     t.equal(errors.fields.foo[0], 'Required', 'Correct required message');
@@ -92,4 +99,6 @@ test('normalise returns correct messages', function (t) {
     t.equal(errors.fields.test6[0], 'Must be shorter than 5 characters', 'Correct maxLength message');
     t.equal(errors.fields.test7[0], 'Should be a date', 'Correct format message');
     t.equal(errors.fields.test8[0], 'Invalid format', 'Correct format message');
+    t.equal(errors.fields.additionalProperties[0], 'Additional property "clientId" not allowed', 'Correct format message');
+
 });
