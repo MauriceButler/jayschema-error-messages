@@ -10,6 +10,23 @@ function getFieldName(error){
     }
 }
 
+function getFormatErrorMessage(error){
+    switch(error.constraintValue){
+        case 'date-time':
+            return 'Should be a date';
+        case 'email':
+            return 'Should be a valid email address';
+        case 'ipv4':
+            return 'Should be a dotted-quad IPv4 address';
+        case 'ipv6':
+            return 'Should be a valid IPv6 address';
+        case 'uri':
+            return 'Should be a valid uri';
+        default:
+            return JSON.stringify(error);
+    }
+}
+
 function getValidMessage(error){
     switch(error.constraintName){
         case 'required':
@@ -25,12 +42,7 @@ function getValidMessage(error){
         case 'maxLength':
             return 'Must be shorter than ' + error.constraintValue + ' characters';
         case 'format':
-            if(error.constraintValue === 'date-time'){
-                return 'Should be a date';
-            } else {
-                return JSON.stringify(error);
-            }
-            break;
+            return getFormatErrorMessage(error);
         case 'pattern':
             return 'Invalid format';
         case 'additionalProperties':
