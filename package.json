@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/MauriceButler/jayschema-error-messages",
   "devDependencies": {
-    "grape": "^0.1.10"
+    "tape": "^3.5.0"
   }
 }

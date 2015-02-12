@@ -1,3 +1,22 @@
+function getGrammaticlSingular(type){
+    switch(type){
+        case 'string':
+            return 'a string';
+        case 'number':
+            return 'a number';
+        case 'object':
+            return 'an object';
+        case 'array':
+            return 'an array';
+        case 'boolean':
+            return 'a boolean';
+        case 'null':
+            return 'null';
+        default:
+            return 'a ' + type;
+    }
+}
+
 function getFieldName(error){
     if(error.instanceContext.length > 2){
         return error.instanceContext.slice(2);
@@ -36,11 +55,15 @@ function getValidMessage(error){
         case 'maximum':
             return 'Must be less than ' + error.constraintValue;
         case 'type':
-            return 'Should be a ' + error.constraintValue;
+            return 'Should be ' + getGrammaticlSingular(error.constraintValue);
         case 'minLength':
             return 'Must be longer than ' + error.constraintValue + ' characters';
         case 'maxLength':
             return 'Must be shorter than ' + error.constraintValue + ' characters';
+        case 'maxItems':
+            return 'Must have no more than ' + error.constraintValue + ' items';
+        case 'minItems':
+            return 'Must have at least ' + error.constraintValue + ' items';
         case 'format':
             return getFormatErrorMessage(error);
         case 'pattern':

@@ -1,5 +1,5 @@
 var normalise = require('../'),
-    test = require('grape');
+    test = require('tape');
 
 
 test('normalise Exists', function (t) {
@@ -10,7 +10,7 @@ test('normalise Exists', function (t) {
 
 
 test('normalise returns correct messages', function (t) {
-    t.plan(18);
+    t.plan(22);
 
     var testErrors = [
         {
@@ -36,9 +36,35 @@ test('normalise returns correct messages', function (t) {
         },
         {
             instanceContext: '#/array',
+            constraintName: 'maxItems',
+            constraintValue: 1,
+            testedValue: 2,
+            kind: 'ArrayValidationError'
+        },
+        {
+            instanceContext: '#/array',
+            constraintName: 'minItems',
+            constraintValue: 2,
+            testedValue: 1,
+            kind: 'ArrayValidationError'
+        },
+        {
+            instanceContext: '#/array',
             constraintName: 'type',
             constraintValue: 'array',
             testedValue: 'string'
+        },
+        {
+            instanceContext: '#/object',
+            constraintName: 'type',
+            constraintValue: 'object',
+            testedValue: 'string'
+        },
+        {
+            instanceContext: '#/string',
+            constraintName: 'type',
+            constraintValue: 'string',
+            testedValue: 'object'
         },
         {
             instanceContext: '#/minLength',
@@ -116,13 +142,17 @@ test('normalise returns correct messages', function (t) {
     t.ok(errors.fields, 'fields exists');
     var fieldKeys = Object.keys(errors.fields);
 
-    t.equal(fieldKeys.length, 14, 'correct number of fields');
+    t.equal(fieldKeys.length, 16, 'correct number of fields');
 
     t.equal(errors.fields.test1[0], 'Required', 'Correct required message');
     t.equal(errors.fields.foo[0], 'Required', 'Correct required message');
     t.equal(errors.fields.minimum[0], 'Must be greater than 4', 'Correct minimum message');
     t.equal(errors.fields.maximum[0], 'Must be less than 8', 'Correct maximum message');
-    t.equal(errors.fields.array[0], 'Should be a array', 'Correct type message');
+    t.equal(errors.fields.array[0], 'Must have no more than 1 items', 'Correct type message');
+    t.equal(errors.fields.array[1], 'Must have at least 2 items', 'Correct type message');
+    t.equal(errors.fields.array[2], 'Should be an array', 'Correct type message');
+    t.equal(errors.fields.object[0], 'Should be an object', 'Correct type message');
+    t.equal(errors.fields.string[0], 'Should be a string', 'Correct type message');
     t.equal(errors.fields.minLength[0], 'Must be longer than 7 characters', 'Correct minLength message');
     t.equal(errors.fields.maxLength[0], 'Must be shorter than 5 characters', 'Correct maxLength message');
     t.equal(errors.fields.datetime[0], 'Should be a date', 'Correct date format message');
