@@ -1,9 +1,12 @@
-function getGrammaticlSingular(type){
-    switch(type){
+function getGrammaticlSingular(type) {
+
+    switch (type) {
         case 'string':
             return 'a string';
         case 'number':
             return 'a number';
+        case 'integer':
+            return 'an integer';
         case 'object':
             return 'an object';
         case 'array':
@@ -17,20 +20,12 @@ function getGrammaticlSingular(type){
     }
 }
 
-function getFieldName(error){
-    if(error.instanceContext.length > 2){
-        return error.instanceContext.slice(2);
-    } else {
-        if(error.constraintValue){
-            return error.constraintValue[0];
-        } else {
-            return error.constraintName;
-        }
-    }
+function getFieldName(error) {
+    return error.params.missingProperty || error.params.additionalProperty || error.dataPath && error.dataPath.replace(".", "");
 }
 
-function getFormatErrorMessage(error){
-    switch(error.constraintValue){
+function getFormatErrorMessage(error) {
+    switch (error.params.format) {
         case 'date-time':
             return 'Should be a date';
         case 'email':
@@ -46,36 +41,36 @@ function getFormatErrorMessage(error){
     }
 }
 
-function getValidMessage(error){
-    switch(error.constraintName){
+function getValidMessage(error) {
+    switch (error.keyword) {
         case 'required':
-            return 'Required';
+            return 'Is required';
         case 'minimum':
-            return 'Must be greater than ' + error.constraintValue;
+            return 'Must be greater than ' + error.params.limit;
         case 'maximum':
-            return 'Must be less than ' + error.constraintValue;
+            return 'Must be less than ' + error.params.limit;
         case 'type':
-            return 'Should be ' + getGrammaticlSingular(error.constraintValue);
+            return 'Should be ' + getGrammaticlSingular(error.params.type);
         case 'minLength':
-            return 'Must be longer than ' + error.constraintValue + ' characters';
+            return 'Must be longer than ' + error.params.limit + ' characters';
         case 'maxLength':
-            return 'Must be shorter than ' + error.constraintValue + ' characters';
+            return 'Must be shorter than ' + error.params.limit + ' characters';
         case 'maxItems':
-            return 'Must have no more than ' + error.constraintValue + ' items';
+            return 'Must have no more than ' + error.params.limit + ' items';
         case 'minItems':
-            return 'Must have at least ' + error.constraintValue + ' items';
+            return 'Must have at least ' + error.params.limit + ' items';
         case 'format':
             return getFormatErrorMessage(error);
         case 'pattern':
             return 'Invalid format';
         case 'additionalProperties':
-            return 'Additional property "' + error.testedValue + '" not allowed';
+            return 'Additional property not allowed';
         default:
-            return JSON.stringify(error);
+            return error.message;
     }
 }
 
-function addMessage(fields, error, fieldName){
+function addMessage(fields, error, fieldName) {
     var field,
         message;
 
@@ -83,26 +78,19 @@ function addMessage(fields, error, fieldName){
     message = getValidMessage(error);
 
 
-    if(!fields[field]){
+    if (!fields[field]) {
         fields[field] = [];
     }
 
     fields[field].push(message);
 }
 
-function normaliseErrorMessages(errors){
+function normaliseErrorMessages(errors) {
     var fields = {};
+    console.log(errors);
+    errors.forEach(function (error) {
 
-    errors.forEach(function(error){
-
-        if(error.constraintName === 'required'){
-            var requiredFields = error.desc.split(': ')[1].split(',');
-            for (var i = 0; i < requiredFields.length; i++) {
-                addMessage(fields, error, requiredFields[i]);
-            }
-        } else {
-            addMessage(fields, error);
-        }
+        addMessage(fields, error);
 
 
     });
