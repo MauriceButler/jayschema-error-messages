@@ -11,20 +11,20 @@ This module normalises them into something sane and actionable.
     var normalise = require('jayschema-error-messages');
 
     var errorsReturnedFromJaySchema = [{ keyword: 'maxItems',
-  dataPath: '.documents',
-  schemaPath: '#/properties/documents/maxItems',
-  params: { limit: 2 },
-  message: 'should NOT have more than 2 items' }
-{ keyword: 'maxLength',
-  dataPath: '.metadata.lastModifiedAt',
-  schemaPath: '#/properties/metadata/properties/lastModifiedAt/maxLength',
-  params: { limit: 2 },
-  message: 'should NOT be longer than 2 characters' }
-{ keyword: 'format',
-  dataPath: '.metadata.lastModifiedAt',
-  schemaPath: '#/properties/metadata/properties/lastModifiedAt/format',
-  params: { format: 'date-time' },
-  message: 'should match format "date-time"' }];
+          dataPath: '.documents',
+          schemaPath: '#/properties/documents/maxItems',
+          params: { limit: 2 },
+          message: 'should NOT have more than 2 items' }
+        { keyword: 'maxLength',
+          dataPath: '.metadata.lastModifiedAt',
+          schemaPath: '#/properties/metadata/properties/lastModifiedAt/maxLength',
+          params: { limit: 2 },
+          message: 'should NOT be longer than 2 characters' }
+        { keyword: 'format',
+          dataPath: '.metadata.lastModifiedAt',
+          schemaPath: '#/properties/metadata/properties/lastModifiedAt/format',
+          params: { format: 'date-time' },
+          message: 'should match format "date-time"' }];
 
     var normalisedErrors = normalise(errorsReturnedFromJaySchema);
 
