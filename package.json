@@ -1,5 +1,5 @@
 {
-  "name": "jayschema-error-messages",
+  "name": "ajv-better-error-messages",
   "version": "2.0.0",
   "description": "Normalises the crazy error objects that get returned from JaySchema",
   "main": "index.js",
